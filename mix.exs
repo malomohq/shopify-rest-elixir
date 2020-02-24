@@ -8,7 +8,8 @@ defmodule Shopify.REST.MixProject do
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      dialyzer: dialyzer()
+      dialyzer: dialyzer(),
+      package: package()
     ]
   end
 
@@ -37,5 +38,17 @@ defmodule Shopify.REST.MixProject do
       plt_add_apps: [:hackney],
       plt_core_path: "./_build/#{Mix.env()}"
     ]
+  end
+
+  defp package do
+    %{
+      description: "Elixir client for the Shopify REST admin API",
+      maintainers: ["Anthony Smith"],
+      licenses: ["MIT"],
+      links: %{
+        GitHub: "https://github.com/malomohq/shopify-rest-elixir",
+        "Made by Malomo - Post-purchase experiences that customers love": "https://gomalomo.com"
+      }
+    }
   end
 end
