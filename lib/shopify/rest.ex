@@ -1,5 +1,5 @@
 defmodule Shopify.REST do
-  alias Shopify.REST.{ Response }
+  alias Shopify.REST.{ Config, Operation, Request, Response }
 
   @type http_headers_t :: [{ String.t(), String.t() }]
 
