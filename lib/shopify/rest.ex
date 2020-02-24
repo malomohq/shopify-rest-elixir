@@ -8,6 +8,14 @@ defmodule Shopify.REST do
   @type response_t :: { :ok, Response.t() } | { :error, Response.t() | any }
 
   @doc """
+  Send a request to Shopify.
+  """
+  @spec request(Operation.t(), map) :: response_t
+  def request(operation, config) do
+    Request.send(operation, Config.new(config))
+  end
+
+  @doc """
   Ensures an HTTP query string passes HMAC verification.
 
   See `verify_hmac/3` for more details.
