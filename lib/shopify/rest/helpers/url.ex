@@ -3,15 +3,15 @@ defmodule Shopify.REST.Helpers.URL do
 
   alias Shopify.REST.{ Config, Operation }
 
-  @spec to_string(Config.t(), Operation.t()) :: String.t()
-  def to_string(config, operation) do
-    config
-    |> to_uri(operation)
+  @spec to_string(Operation.t(), Config.t()) :: String.t()
+  def to_string(operation, config) do
+    operation
+    |> to_uri(config)
     |> URI.to_string()
   end
 
-  @spec to_uri(Config.t(), Operation.t()) :: URI.t()
-  def to_uri(config, operation) do
+  @spec to_uri(Operation.t(), Config.t()) :: URI.t()
+  def to_uri(operation, config) do
     %URI{}
     |> Map.put(:port, config.port)
     |> Map.put(:scheme, config.protocol)
