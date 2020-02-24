@@ -36,7 +36,7 @@ defmodule Shopify.REST.MixProject do
 
   defp dialyzer do
     [
-      plt_add_apps: [:hackney],
+      plt_add_apps: [:gen_stage, :hackney],
       plt_core_path: "./_build/#{Mix.env()}"
     ]
   end
