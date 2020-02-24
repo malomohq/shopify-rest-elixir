@@ -26,7 +26,7 @@ defmodule Shopify.REST.Config do
             json_codec: Jason,
             limiter: false,
             limiter_opts: [],
-            path: "/admin",
+            path: "/admin/api",
             port: nil,
             protocol: "https",
             retry: false,
