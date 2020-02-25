@@ -36,6 +36,8 @@ and `:path`.
    whether `:method` is `:get` (query string), `:post` or `:put` (request body).
 * `:path` - the path to send the requst to. Must begin with a forward slash.
 
+### Public Applications
+
 ### Verifying HMAC Signatures
 
 `Shopify.REST` provides `verify_hmac/2` and `verify_hmac/3` functions for
