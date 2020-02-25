@@ -24,7 +24,7 @@ You can send a request to the Shopify admin API by building a
 ```elixir
 operation = %Shopify.REST.Operation{ method: :get, params: %{ fields: ["name"] }, path: "/shop.json" }
 
-{ :ok, response } = Shopify.REST.request(operation, %{access_token: "f85632530bf277ec9ac6f649fc327f17", shop: "some-shop"})
+{:ok, response} = Shopify.REST.request(operation, %{access_token: "f85632530bf277ec9ac6f649fc327f17", shop: "some-shop"})
 ```
 
 `Shopify.REST.Operation` is a struct that contains fields `:method`, `:params`
@@ -36,7 +36,61 @@ and `:path`.
    whether `:method` is `:get` (query string), `:post` or `:put` (request body).
 * `:path` - the path to send the requst to. Must begin with a forward slash.
 
-### Public Applications
+### Public Applications (Authentication with OAuth)
+
+As a public app, when sending a request to Shopify, you can authenticate a
+by supplying an `:access_token` config field to the second argument of
+`Shopify.REST.request/2`.
+
+See the [Usage](#usage) section for an example.
+
+[See Shopify's official documentation for more details.](https://shopify.dev/tutorials/authenticate-with-oauth)
+
+### Private Application
+
+Shopify provides support for authenticating a private application using basic
+HTTP authentication and the `X-Shopify-Access-Token` header (similar to
+authenticating with OAuth).
+
+[See Shopify's official documentation for more details.](https://shopify.dev/tutorials/authenticate-a-private-app-with-shopify-admin#make-authenticated-requests)
+
+#### Access Token
+
+Provide your private app's password as the `:access_token` config value.
+
+See the [Usage](#usage) section for an example.
+
+#### Basic Authentication
+
+You can authenticate via basic HTTP authentication in one of two ways.
+
+You can provide `{api key}:{password}@{shop}.myshopify.com` as the `:host`
+config value.
+
+```elixir
+operation = %Shopify.REST.Operation{ method: :get, params: %{ fields: ["name"] }, path: "/shop.json" }
+
+api_key = "a1d5c494473570dde9beb107ebe7d0ba"
+password = "93bbe468834c7dadbb7209c3223cb722"
+shop = "some-shop"
+
+{:ok, response} = Shopify.REST.request(operation, %{host: "#{api_key}:#{password}@#{shop}.myshopify.com"})
+```
+
+You can also provide an `Authorization` header with your api key and password
+joined by a colon (`:`), base-64 encoded and prepended with the string `Basic`.
+
+```elixir
+operation = %Shopify.REST.Operation{ method: :get, params: %{ fields: ["name"] }, path: "/shop.json" }
+
+api_key = "a1d5c494473570dde9beb107ebe7d0ba"
+password = "93bbe468834c7dadbb7209c3223cb722"
+shop = "some-shop"
+
+header = "Basic #{api_key}:#{password}" |> Base.encode64()
+
+{:ok, response} = Shopify.REST.request(operation, %{headers: [{"Authorization", header}], shop: shop})
+```
 
 ### Verifying HMAC Signatures
 
