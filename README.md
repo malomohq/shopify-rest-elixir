@@ -24,7 +24,7 @@ You can send a request to the Shopify admin API by building a
 ```elixir
 operation = %Shopify.REST.Operation{ method: :get, params: %{ fields: ["name"] }, path: "/shop.json" }
 
-{ :ok, response } = Shopify.REST.request(%{access_token: "f85632530bf277ec9ac6f649fc327f17", shop: "some-shop"})
+{ :ok, response } = Shopify.REST.request(operation, %{access_token: "f85632530bf277ec9ac6f649fc327f17", shop: "some-shop"})
 ```
 
 `Shopify.REST.Operation` is a struct that contains fields `:method`, `:params`
@@ -32,8 +32,8 @@ and `:path`.
 
 * `:method` - an HTTP method and can be one of `:delete`, `:get`, `:post` or
   `:put`.
-* `:params` - the request body or query string depending on whether `:method` is
-  `:get` (query string), `:post` or `:put` (request body).
+* `:params` - a map containing the request body or query string depending on
+   whether `:method` is `:get` (query string), `:post` or `:put` (request body).
 * `:path` - the path to send the requst to. Must begin with a forward slash.
 
 ### Verifying HMAC Signatures
