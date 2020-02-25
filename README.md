@@ -87,9 +87,9 @@ api_key = "a1d5c494473570dde9beb107ebe7d0ba"
 password = "93bbe468834c7dadbb7209c3223cb722"
 shop = "some-shop"
 
-header = "Basic #{api_key}:#{password}" |> Base.encode64()
+header = "#{api_key}:#{password}" |> Base.encode64()
 
-{:ok, response} = Shopify.REST.request(operation, %{headers: [{"Authorization", header}], shop: shop})
+{:ok, response} = Shopify.REST.request(operation, %{headers: [{"Authorization", "Basic #{header}"}], shop: shop})
 ```
 
 ### Verifying HMAC Signatures
