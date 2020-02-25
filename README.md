@@ -87,7 +87,7 @@ api_key = "a1d5c494473570dde9beb107ebe7d0ba"
 password = "93bbe468834c7dadbb7209c3223cb722"
 shop = "some-shop"
 
-header = "#{api_key}:#{password}" |> Base.encode64()
+header = Base.encode64("#{api_key}:#{password}") 
 
 {:ok, response} = Shopify.REST.request(operation, %{headers: [{"Authorization", "Basic #{header}"}], shop: shop})
 ```
