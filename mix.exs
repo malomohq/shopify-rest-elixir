@@ -49,7 +49,7 @@ defmodule Shopify.REST.MixProject do
 
   defp package do
     %{
-      description: "Elixir client for the Shopify REST admin API",
+      description: "Client for the Shopify REST admin API",
       maintainers: ["Anthony Smith"],
       licenses: ["MIT"],
       links: %{
