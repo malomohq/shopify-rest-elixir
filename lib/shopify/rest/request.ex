@@ -34,7 +34,7 @@ defmodule Shopify.REST.Request do
 
     body = Helpers.JSON.encode(operation.params, config)
 
-    headers = [{ "content-type", "application/json" }] ++ config.headers
+    headers = Helpers.Headers.new(config)
 
     method = operation.method
 
