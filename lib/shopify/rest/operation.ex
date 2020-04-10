@@ -6,5 +6,5 @@ defmodule Shopify.REST.Operation do
             path: String.t()
           }
 
-  defstruct method: nil, params: %{}, path: nil
+  defstruct [:method, :params, :path]
 end
