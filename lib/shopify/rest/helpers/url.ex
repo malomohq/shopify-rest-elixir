@@ -36,8 +36,8 @@ defmodule Shopify.REST.Helpers.URL do
     Map.put(uri, :path, "#{config.path}#{operation.path}")
   end
 
-  defp put_query(uri, %{ method: :get } = operation) do
-    Map.put(uri, :query, URI.encode_query(operation.params))
+  defp put_query(uri, %{ method: :get, params: params }) when not is_nil(params) do
+    Map.put(uri, :query, URI.encode_query(params))
   end
 
   defp put_query(uri, _operation) do
