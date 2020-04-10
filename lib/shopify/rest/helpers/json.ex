@@ -15,6 +15,10 @@ defmodule Shopify.REST.Helpers.JSON do
 
 
   @spec encode(map, Config.t()) :: String.t()
+  def encode(nil, _config) do
+    ""
+  end
+  
   def encode(map, config) do
     case config.json_codec.encode(map) do
       { :ok, result } ->
