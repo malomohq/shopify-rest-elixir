@@ -32,7 +32,7 @@ defmodule Shopify.REST.Request do
   defp do_send(operation, config, private) do
     http_client_opts = config.http_client_opts
 
-    body = Helpers.JSON.encode(operation.params, config)
+    body = Helpers.Body.new(operation, config)
 
     headers = Helpers.Headers.new(config)
 
