@@ -21,13 +21,13 @@ defmodule Shopify.RESTTest do
     assert { :ok, ^hmac } = Shopify.REST.verify_hmac_for_oauth(hmac, message, shared_secret)
   end
 
-  test "verify_hmac_for_webhook/2" do
+  test "verify_hmac_for_webhook/3" do
     hmac = "ruonad9ilcg3rhfv89nkzi4x7kkh7jibyhxkbewugvi="
 
-    message = "<webhook request body>"
+    body = "<webhook request body>"
 
     shared_secret = "hush"
 
-    assert { :ok, ^hmac } = Shopify.REST.verify_hmac_for_webhook(hmac, message, shared_secret)
+    assert { :ok, ^hmac } = Shopify.REST.verify_hmac_for_webhook(hmac, body, shared_secret)
   end
 end
