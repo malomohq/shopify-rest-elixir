@@ -83,7 +83,7 @@ defmodule Shopify.REST do
 
   ## Example
 
-      hmac = "700e2dadb827fcc8609e9d5ce208b2e9cdaab9df07390d2cbca10d7c328fc4bf"
+      hmac = "ruonad9ilcg3rhfv89nkzi4x7kkh7jibyhxkbewugvi="
       message = "<webhook request body>"
       shared_secret = "hush"
 
