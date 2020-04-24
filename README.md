@@ -87,36 +87,49 @@ api_key = "a1d5c494473570dde9beb107ebe7d0ba"
 password = "93bbe468834c7dadbb7209c3223cb722"
 shop = "some-shop"
 
-header = Base.encode64("#{api_key}:#{password}") 
+header = Base.encode64("#{api_key}:#{password}")
 
 {:ok, response} = Shopify.REST.request(operation, %{headers: [{"Authorization", "Basic #{header}"}], shop: shop})
 ```
 
 ### Verifying HMAC Signatures
 
-`Shopify.REST` provides `verify_hmac/2` and `verify_hmac/3` functions for
-verifying HMAC signatures returned by the Shopify API.
+`Shopify.REST` provides `verify_hmac_for_oauth/2`, `verify_hmac_for_oauth/3`
+and `verify_hmac_for_webhook/3` functions for working with OAuth and webhook
+HMAC signatures.
 
-Please see the Shopify [Authentication with REST](https://shopify.dev/tutorials/authenticate-with-REST#verification)
-documentation for the technical details regarding HMAC verification.
+**See also**
 
-**`verify_hmac/2`**
+* [Authenticate with OAuth](https://shopify.dev/tutorials/authenticate-with-oauth#verification)
+* [Manage webhooks with the Admin API](https://shopify.dev/tutorials/manage-webhooks#creating-an-endpoint-for-webhooks)
+
+**`verify_hmac_for_oauth/2`**
 
 ```elixir
 query = "code=0907a61c0c8d55e99db179b68161bc00&hmac=700e2dadb827fcc8609e9d5ce208b2e9cdaab9df07390d2cbca10d7c328fc4bf&shop=some-shop.myshopify.com&state=0.6784241404160823&timestamp=1337178173"
 shared_secret = "hush"
 
-{:ok, hmac} = Shopify.REST.verify_hmac(query, shared_secret)
+{:ok, hmac} = Shopify.REST.verify_hmac_for_oauth(query, shared_secret)
 ```
 
-**`verify_hmac/3`**
+**`verify_hmac_for_oauth/3`**
 
 ```elixir
 hmac = "700e2dadb827fcc8609e9d5ce208b2e9cdaab9df07390d2cbca10d7c328fc4bf"
 message = "code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&timestamp=1337178173"
 shared_secret = "hush"
 
-{:ok, hmac} = Shopify.HMAC.verify(hmac, message, shared_secret)
+{:ok, hmac} = Shopify.REST.verify_hmac_for_oauth(hmac, message, shared_secret)
+```
+
+**`verify_hmac_for_webhook/3`**
+
+```elixir
+hmac = "700e2dadb827fcc8609e9d5ce208b2e9cdaab9df07390d2cbca10d7c328fc4bf"
+message = "<webhook request body>"
+shared_secret = "hush"
+
+{:ok, hmac} = Shopify.REST.verify_hmac_for_webhook(hmac, message, shared_secret)
 ```
 
 ## Configuration
