@@ -126,10 +126,10 @@ shared_secret = "hush"
 
 ```elixir
 hmac = "700e2dadb827fcc8609e9d5ce208b2e9cdaab9df07390d2cbca10d7c328fc4bf"
-message = "<webhook request body>"
+body = "<webhook request body>"
 shared_secret = "hush"
 
-{:ok, hmac} = Shopify.REST.verify_hmac_for_webhook(hmac, message, shared_secret)
+{:ok, hmac} = Shopify.REST.verify_hmac_for_webhook(hmac, body, shared_secret)
 ```
 
 ## Configuration
