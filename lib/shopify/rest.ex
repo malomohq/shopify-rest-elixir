@@ -15,28 +15,44 @@ defmodule Shopify.REST do
     Request.send(operation, Config.new(config))
   end
 
+  @doc false
+  @deprecated "Use verify_hmac_for_oauth/2 instead."
+  @spec verify_hmac(String.t(), String.t()) ::
+          { :ok, String.t() } | { :error, String.t() }
+  def verify_hmac(query, shared_secret) do
+    verify_hmac_for_oauth(query, shared_secret)
+  end
+
+  @doc false
+  @deprecated "Use verify_hmac_for_oauth/3 instead."
+  @spec verify_hmac(String.t(), String.t(), String.t()) ::
+          { :ok, String.t() } | { :error, String.t() }
+  def verify_hmac(hmac, message, shared_secret) do
+    verify_hmac_for_oauth(hmac, message, shared_secret)
+  end
+
   @doc """
   Ensures an HTTP query string passes HMAC verification.
 
-  See `verify_hmac/3` for more details.
+  See `verify_hmac_for_oauth/3` for more details.
 
   ## Example
 
       query = "code=0907a61c0c8d55e99db179b68161bc00&hmac=700e2dadb827fcc8609e9d5ce208b2e9cdaab9df07390d2cbca10d7c328fc4bf&shop=some-shop.myshopify.com&state=0.6784241404160823&timestamp=1337178173"
       shared_secret = "hush"
 
-      {:ok, hmac} = Shopify.OAuth.verify_hmac(query, shared_secret)
+      {:ok, hmac} = Shopify.REST.verify_hmac_for_oauth(query, shared_secret)
   """
-  @spec verify_hmac(String.t(), String.t()) ::
+  @spec verify_hmac_for_oauth(String.t(), String.t()) ::
           { :ok, String.t() } | { :error, String.t() }
-  def verify_hmac(query, shared_secret) do
+  def verify_hmac_for_oauth(query, shared_secret) do
     decoded_query = URI.decode_query(query)
 
     { hmac, decoded_message } = Map.pop(decoded_query, "hmac")
 
     message = URI.encode_query(decoded_message)
 
-    verify_hmac(hmac, message, shared_secret)
+    verify_hmac_for_oauth(hmac, message, shared_secret)
   end
 
   @doc """
@@ -53,14 +69,40 @@ defmodule Shopify.REST do
       message = "code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&timestamp=1337178173"
       shared_secret = "hush"
 
-      {:ok, hmac} = Shopify.HMAC.verify(hmac, message, shared_secret)
+      {:ok, hmac} = Shopify.REST.verify_hmac_for_oauth(hmac, message, shared_secret)
   """
-  @spec verify_hmac(String.t(), String.t(), String.t()) ::
+  @spec verify_hmac_for_oauth(String.t(), String.t(), String.t()) ::
           { :ok, String.t() } | { :error, String.t() }
-  def verify_hmac(hmac, message, shared_secret) do
+  def verify_hmac_for_oauth(hmac, message, shared_secret) do
+    ensure_hmac(hmac, message, shared_secret, 16)
+  end
+
+  @doc """
+  Verifies the Shopify HMAC signature.
+
+  This function will compute an SHA256 HMAC digest based on the provided
+  `message` and `shared_secret`. The digest is then compared to the `hmac`
+  signature. If they match, verification has passed. Otherwise verification
+  has failed.
+
+  ## Example
+
+      hmac = "700e2dadb827fcc8609e9d5ce208b2e9cdaab9df07390d2cbca10d7c328fc4bf"
+      message = "code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&timestamp=1337178173"
+      shared_secret = "hush"
+
+      {:ok, hmac} = Shopify.REST.verify_hmac_for_webhook(hmac, message, shared_secret)
+  """
+  @spec verify_hmac_for_webhook(String.t(), String.t(), String.t()) ::
+          { :ok, String.t() } | { :error, String.t() }
+  def verify_hmac_for_webhook(hmac, message, shared_secret) do
+    ensure_hmac(hmac, message, shared_secret, 64)
+  end
+
+  defp ensure_hmac(hmac, message, shared_secret, encoding) do
     digest =
       :crypto.hmac(:sha256, shared_secret, message)
-      |> Base.encode16()
+      |> encode_hmac(encoding)
       |> String.downcase()
 
     case digest do
@@ -69,5 +111,13 @@ defmodule Shopify.REST do
       _otherwise ->
         { :error, digest }
     end
+  end
+
+  defp encode_hmac(hmac, 16) do
+    Base.encode16(hmac)
+  end
+
+  defp encode_hmac(hmac, 64) do
+    Base.encode64(hmac)
   end
 end
