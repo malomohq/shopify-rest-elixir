@@ -78,17 +78,13 @@ defmodule Shopify.REST do
   end
 
   @doc """
-  Verifies the Shopify HMAC signature.
-
-  This function will compute an SHA256 HMAC digest based on the provided
-  `message` and `shared_secret`. The digest is then compared to the `hmac`
-  signature. If they match, verification has passed. Otherwise verification
-  has failed.
+  Same as `verify_hmac_for_oauth/3` but intended to be used for verifying the
+  signature of a webhook payload.
 
   ## Example
 
       hmac = "700e2dadb827fcc8609e9d5ce208b2e9cdaab9df07390d2cbca10d7c328fc4bf"
-      message = "code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&timestamp=1337178173"
+      message = "<webhook request body>"
       shared_secret = "hush"
 
       {:ok, hmac} = Shopify.REST.verify_hmac_for_webhook(hmac, message, shared_secret)
