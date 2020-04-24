@@ -87,7 +87,7 @@ defmodule Shopify.REST do
       body = "<webhook request body>"
       shared_secret = "hush"
 
-      {:ok, hmac} = Shopify.REST.verify_hmac_for_webhook(hmac, message, shared_secret)
+      {:ok, hmac} = Shopify.REST.verify_hmac_for_webhook(hmac, body, shared_secret)
   """
   @spec verify_hmac_for_webhook(String.t(), String.t(), String.t()) ::
           { :ok, String.t() } | { :error, String.t() }
