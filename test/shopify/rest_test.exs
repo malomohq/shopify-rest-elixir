@@ -22,9 +22,9 @@ defmodule Shopify.RESTTest do
   end
 
   test "verify_hmac_for_webhook/2" do
-    hmac = "ca4trbgn/mhgnp1c4giy6c2qud8hoq0svkenfdkpxl8="
+    hmac = "ruonad9ilcg3rhfv89nkzi4x7kkh7jibyhxkbewugvi="
 
-    message = "code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&state=0.6784241404160823&timestamp=1337178173"
+    message = "<webhook request body>"
 
     shared_secret = "hush"
 
