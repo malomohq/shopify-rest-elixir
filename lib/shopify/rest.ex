@@ -92,7 +92,9 @@ defmodule Shopify.REST do
   @spec verify_hmac_for_webhook(String.t(), String.t(), String.t()) ::
           { :ok, String.t() } | { :error, String.t() }
   def verify_hmac_for_webhook(hmac, body, shared_secret) do
-    ensure_hmac(hmac, body, shared_secret, 64)
+    hmac
+    |> String.downcase()
+    |> ensure_hmac(body, shared_secret, 64)
   end
 
   defp ensure_hmac(hmac, message, shared_secret, encoding) do

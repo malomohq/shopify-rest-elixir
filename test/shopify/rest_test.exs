@@ -28,6 +28,9 @@ defmodule Shopify.RESTTest do
 
     shared_secret = "hush"
 
-    assert { :ok, ^hmac } = Shopify.REST.verify_hmac_for_webhook(hmac, body, shared_secret)
+    assert { :ok, ^hmac } =
+      hmac
+      |> String.upcase()
+      |> Shopify.REST.verify_hmac_for_webhook(body, shared_secret)
   end
 end
