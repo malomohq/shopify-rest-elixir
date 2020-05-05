@@ -3,11 +3,13 @@
 ## Installation
 
 `Shopify.REST` is published on [Hex](https://hex.pm/packages/shopify_REST).
-Add it to your list of dependencies in `mix.exs`;
+Add it to your list of dependencies in `mix.exs`:
 
 ```elixir
 defp deps do
-  { :shopify_rest, "~> 1.0" }
+  [
+    { :shopify_rest, "~> 1.0" }
+  ]
 end
 ```
 
