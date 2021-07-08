@@ -36,7 +36,7 @@ defmodule Shopify.REST.MixProject do
       # test
       #
 
-      { :bypass, "~> 1.0", only: :test }
+      { :bypass, "~> 2.0", only: :test }
     ]
   end
 
