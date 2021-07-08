@@ -99,7 +99,7 @@ defmodule Shopify.REST do
 
   defp ensure_hmac(hmac, message, shared_secret, encoding) do
     digest =
-      :crypto.hmac(:sha256, shared_secret, message)
+      :crypto.mac(:hmac, :sha256, shared_secret, message)
       |> encode_hmac(encoding)
       |> String.downcase()
 
