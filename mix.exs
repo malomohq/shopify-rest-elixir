@@ -4,8 +4,8 @@ defmodule Shopify.REST.MixProject do
   def project do
     [
       app: :shopify_rest,
-      version: "1.1.1",
-      elixir: "~> 1.8",
+      version: "1.1.2",
+      elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       dialyzer: dialyzer(),
